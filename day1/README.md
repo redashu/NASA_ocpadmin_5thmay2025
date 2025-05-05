@@ -46,3 +46,34 @@
 ## few info about worker 
 
 <img src="w1.png">
+
+## k8s to Openshift container platform 
+
+<img src="ocp11.png">
+
+## few more info about OCP 
+
+<img src="ocp22.png">
+
+## OPenshift installation options 
+
+- IPI 
+- UPI 
+
+### info about IPI 
+
+<img src="ipi.png">
+
+## OPenshift UPI based Installation 
+
+### lab infra of Redhat understanding 
+
+<img src="lab1.png">
+
+### understanding bare-metal env for ocp 
+
+<img src="lab2.png">
+
+## machine where we gonna install pre-requisite  lab (root@utility)
+
+<img src="lab3.png">
