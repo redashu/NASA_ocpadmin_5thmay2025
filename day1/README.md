@@ -77,3 +77,7 @@
 ## machine where we gonna install pre-requisite  lab (root@utility)
 
 <img src="lab3.png">
+
+## ocp UPI installation revision 
+
+<img src="oci_rev.png">
