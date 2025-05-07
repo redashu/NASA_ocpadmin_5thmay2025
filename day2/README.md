@@ -375,3 +375,148 @@ downloads-5bf6d6d998-vh928   1/1     Running   0          7h44m
 
 
 ```
+
+## COntainer networking using SDN 
+
+<img src="net1.png">
+
+### COntainer default bridge network setup 
+
+<img src="net2.png">
+
+## some action with docker networking 
+
+```
+[ec2-user@ip-172-31-26-148 ~]$ docker network  ls
+NETWORK ID     NAME      DRIVER    SCOPE
+1bb03ac4e8c8   bridge    bridge    local
+3cf049ddd132   host      host      local
+2e61a85a66a0   none      null      local
+[ec2-user@ip-172-31-26-148 ~]$ docker network  inspect  1bb03ac4e8c8 
+[
+    {
+        "Name": "bridge",
+        "Id": "1bb03ac4e8c8c0c7a4e485483e99441541dfa797e02736e917da0cc95b0ac0eb",
+        "Created": "2025-05-07T22:16:24.843934793Z",
+        "Scope": "local",
+        "Driver": "bridge",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": [
+                {
+                    "Subnet": "172.17.0.0/16",
+                    "Gateway": "172.17.0.1"
+                }
+            ]
+        },
+
+```
+
+### lets create container to test 
+
+```
+docker  run -itd --name ashuc1  alpine
+
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ docker  exec -it ashuc1  sh 
+/ # 
+/ # ifconfig 
+eth0      Link encap:Ethernet  HWaddr 02:42:AC:11:00:02  
+          inet addr:172.17.0.2  Bcast:172.17.255.255  Mask:255.255.0.0
+          UP BROADCAST RUNNING MULTICAST  MTU:1500  Metric:1
+          RX packets:17 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:0 
+          RX bytes:1462 (1.4 KiB)  TX bytes:0 (0.0 B)
+
+lo        Link encap:Local Loopback  
+          inet addr:127.0.0.1  Mask:255.0.0.0
+          UP LOOPBACK RUNNING  MTU:65536  Metric:1
+          RX packets:0 errors:0 dropped:0 overruns:0 frame:0
+          TX packets:0 errors:0 dropped:0 overruns:0 carrier:0
+          collisions:0 txqueuelen:1000 
+          RX bytes:0 (0.0 B)  TX bytes:0 (0.0 B)
+
+/ # ping 172.17.0.6
+PING 172.17.0.6 (172.17.0.6): 56 data bytes
+64 bytes from 172.17.0.6: seq=0 ttl=127 time=0.110 ms
+64 bytes from 172.17.0.6: seq=1 ttl=127 time=0.073 ms
+^C
+--- 172.17.0.6 ping statistics ---
+2 packets transmitted, 2 packets received, 0% packet loss
+round-trip min/avg/max = 0.073/0.091/0.110 ms
+/ # ping google.com 
+PING google.com (172.253.62.102): 56 data bytes
+64 bytes from 172.253.62.102: seq=0 ttl=107 time=2.496 ms
+64 bytes from 172.253.62.102: seq=1 ttl=107 time=1.942 ms
+
+```
+
+## CNI bridge story in k8s / ocp 
+
+<img src="cni.png">
+
+### pod in ocp can communicate to each other 
+
+```
+ec2-user@ip-172-31-26-148 ~]$ oc  run webapp --image nginx --port 80 
+pod/webapp created
+[ec2-user@ip-172-31-26-148 ~]$ oc get po -o wide
+NAME     READY   STATUS    RESTARTS   AGE   IP            NODE                          NOMINATED NODE   READINESS GATES
+webapp   1/1     Running   0          5s    10.129.2.29   ip-10-0-77-176.ec2.internal   <none>           <none>
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ oc  run webclient  --image alpine --command sleep 1000000
+pod/webclient created
+[ec2-user@ip-172-31-26-148 ~]$ oc get po -o wide
+NAME        READY   STATUS              RESTARTS   AGE   IP            NODE                          NOMINATED NODE   READINESS GATES
+russweb     0/1     ContainerCreating   0          2s    <none>        ip-10-0-77-176.ec2.internal   <none>           <none>
+webapp      1/1     Running             0          38s   10.129.2.29   ip-10-0-77-176.ec2.internal   <none>           <none>
+webclient   1/1     Running             0          5s    10.129.2.30   ip-10-0-77-176.ec2.internal   <none>           <none>
+[ec2-user@ip-172-31-26-148 ~]$ oc rsh webclient 
+/ # curl http://10.129.2.29
+/bin/sh: curl: not found
+/ # apk add curl 
+fetch https://dl-cdn.alpinelinux.org/alpine/v3.21/main/x86_64/APKINDEX.tar.gz
+fetch https://dl-cdn.alpinelinux.org/alpine/v3.21/community/x86_64/APKINDEX.tar.gz
+(1/9) Installing brotli-libs (1.1.0-r2)
+(2/9) Installing c-ares (1.34.5-r0)
+(3/9) Installing libunistring (1.2-r0)
+(4/9) Installing libidn2 (2.3.7-r0)
+(5/9) Installing nghttp2-libs (1.64.0-r0)
+(6/9) Installing libpsl (0.21.5-r3)
+(7/9) Installing zstd-libs (1.5.6-r2)
+(8/9) Installing libcurl (8.12.1-r1)
+(9/9) Installing curl (8.12.1-r1)
+Executing busybox-1.37.0-r12.trigger
+OK: 12 MiB in 24 packages
+/ # 
+/ # curl http://10.129.2.29
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+/ # 
+
+```
