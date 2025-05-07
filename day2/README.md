@@ -134,3 +134,112 @@ ashu-pod1   1/1     Running   0          11s
 [ec2-user@ip-172-31-26-148 ~]$ 
 
 ```
+
+### few more options to check pod info 
+
+```
+ec2-user@ip-172-31-26-148 ~]$ oc  get nodes
+NAME                          STATUS   ROLES                  AGE     VERSION
+ip-10-0-0-18.ec2.internal     Ready    control-plane,master   5h19m   v1.31.7
+ip-10-0-3-227.ec2.internal    Ready    control-plane,master   5h17m   v1.31.7
+ip-10-0-47-26.ec2.internal    Ready    control-plane,master   5h17m   v1.31.7
+ip-10-0-70-128.ec2.internal   Ready    worker                 5h4m    v1.31.7
+ip-10-0-77-176.ec2.internal   Ready    worker                 4h57m   v1.31.7
+ip-10-0-92-169.ec2.internal   Ready    worker                 5h4m    v1.31.7
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ oc  get po -o wide
+NAME          READY   STATUS    RESTARTS   AGE   IP            NODE                          NOMINATED NODE   READINESS GATES
+ashu-pod1     1/1     Running   0          34m   10.129.2.10   ip-10-0-77-176.ec2.internal   <none>           <none>
+ashu-pod2     1/1     Running   0          29m   10.131.0.20   ip-10-0-92-169.ec2.internal   <none>           <none>
+cm-pod1       1/1     Running   0          25m   10.131.0.21   ip-10-0-92-169.ec2.internal   <none>           <none>
+dan-pod1      1/1     Running   0          32m   10.129.2.15   ip-10-0-77-176.ec2.internal   <none>           <none>
+harout-pod1   1/1     Running   0          32m   10.129.2.12   ip-10-0-77-176.ec2.internal   <none>           <none>
+holly-pod1    1/1     Running   0          26m   10.128.2.42   ip-10-0-70-128.ec2.internal   <none>           <none>
+iris-pod1     1/1     Running   0          32m   10.129.2.13   ip-10-0-77-176.ec2.internal   <none>           <none>
+jerry-pod1    1/1     Running   0          31m   10.131.0.19   ip-10-0-92-169.ec2.internal   <none>           <none>
+lee-pod1      1/1     Running   0          29m   10.128.2.40   ip-10-0-70-128.ec2.internal   <none>           <none>
+manuel-pod1   1/1     Running   0          30m   10.129.2.17   ip-10-0-77-176.ec2.internal   <none>           <none>
+mjg-pod1      1/1     Running   0          31m   10.129.2.16   ip-10-0-77-176.ec2.internal   <none>           <none>
+parsi-pod1    1/1     Running   0          29m   10.129.2.18   ip-10-0-77-176.ec2.internal   <none>           <none>
+ptseng-pod1   1/1     Running   0          32m   10.129.2.14   ip-10-0-77-176.ec2.internal   <none>           <none>
+russ-pod1     1/1     Running   0          33m   10.129.2.11   ip-10-0-77-176.ec2.internal   <none>           <none>
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ oc  get po  ashu-pod1  -o wide
+NAME        READY   STATUS    RESTARTS   AGE   IP            NODE                          NOMINATED NODE   READINESS GATES
+ashu-pod1   1/1     Running   0          36m   10.129.2.10   ip-10-0-77-176.ec2.internal   <none>           <none>
+[ec2-user@ip-172-31-26-148 ~]$ 
+
+
+===>
+[ec2-user@ip-172-31-26-148 ~]$ oc  describe  pod  ashu-pod1 
+Name:             ashu-pod1
+Namespace:        default
+Priority:         0
+Service Account:  default
+Node:             ip-10-0-77-176.ec2.internal/10.0.77.176
+Start Time:       Wed, 07 May 2025 17:54:38 +0000
+Labels:           run=ashu-pod1
+Annotations:      k8s.ovn.org/pod-networks:
+                    {"default":{"ip_addresses":["10.129.2.10/23"],"mac_address":"0a:58:0a:81:02:0a","gateway_ips":["10.129.2.1"],"routes":[{"dest":"10.128.0.0...
+                  k8s.v1.cni.cncf.io/network-status:
+                    [{
+                        "name": "ovn-kubernetes",
+                        "interface": "eth0",
+                        "ips": [
+
+
+===>
+[ec2-user@ip-172-31-26-148 ~]$ oc  logs ashu-pod1
+
+/docker-entrypoint.sh: /docker-entrypoint.d/ is not empty, will attempt to perform configuration
+/docker-entrypoint.sh: Looking for shell scripts in /docker-entrypoint.d/
+/docker-entrypoint.sh: Launching /docker-entrypoint.d/10-listen-on-ipv6-by-default.sh
+10-listen-on-ipv6-by-default.sh: info: Getting the checksum of /etc/nginx/conf.d/default
+
+
+```
+
+### loging to pod container 
+
+```
+[ec2-user@ip-172-31-26-148 ~]$ oc  exec -it ashu-pod1   --  ls /
+bin  boot  dev	docker-entrypoint.d  docker-entrypoint.sh  etc	home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ oc  exec -it ashu-pod1   -- /bin/bash 
+root@ashu-pod1:/# 
+root@ashu-pod1:/# 
+root@ashu-pod1:/# ls
+bin  boot  dev	docker-entrypoint.d  docker-entrypoint.sh  etc	home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+root@ashu-pod1:/# 
+root@ashu-pod1:/# exit
+exit
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ 
+
+```
+
+## Rsh in pod ops
+
+```
+[ec2-user@ip-172-31-26-148 ~]$ oc  rsh   ashu-pod1    
+# 
+# id
+uid=0(root) gid=0(root) groups=0(root)
+# ls 
+bin  boot  dev	docker-entrypoint.d  docker-entrypoint.sh  etc	home  lib  lib64  media  mnt  opt  proc  root  run  sbin  srv  sys  tmp  usr  var
+# mkdir hello
+# ls
+bin  boot  dev	docker-entrypoint.d  docker-entrypoint.sh  etc	hello  home  lib  lib64  media	mnt  opt  proc	root  run  sbin  srv  sys  tmp	usr  var
+# exit
+[ec2-user@ip-172-31-26-148 ~]$ 
+
+
+```
+
+### pod delete 
+
+```
+ec2-user@ip-172-31-26-148 ~]$ oc  delete  pod ashu-pod1
+pod "ashu-pod1" deleted
+
+```
