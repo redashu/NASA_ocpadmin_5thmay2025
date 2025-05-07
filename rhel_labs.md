@@ -15,7 +15,7 @@ sudo yum install chromium -y
 ### Change Secret to JSON Format for Better Editing
 
 ```bash
-python3 -m json.tool Downloads/pull-secret > pull-secret.json
+python3 -m json.tool Downloads/pull-secret.txt > pull-secret.json
 ```
 
 ### It Will Look Like This — Change `quay.io` to Local Registry
