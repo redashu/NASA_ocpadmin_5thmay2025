@@ -243,3 +243,104 @@ ec2-user@ip-172-31-26-148 ~]$ oc  delete  pod ashu-pod1
 pod "ashu-pod1" deleted
 
 ```
+
+## namespace and project concepts 
+
+<img src="ns1.png">
+
+### correct way to login into ocp cluster permanently
+
+```
+[ec2-user@ip-172-31-26-148 ~]$ oc  login -u kubeadmin -p  ""  https://api.nasa-cluster.ashutoshh.xyz:6443 
+Login successful.
+
+You have access to 73 projects, the list has been suppressed. You can list all projects with 'oc projects'
+
+Using project "default".
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ oc  get pods
+No resources found in default namespace.
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ oc  project
+Using project "default" on server "https://api.nasa-cluster.ashutoshh.xyz:6443".
+[ec2-user@ip-172-31-26-148 ~]$ 
+
+```
+
+### listing all 
+
+```
+[ec2-user@ip-172-31-26-148 ~]$ oc  project
+Using project "default" on server "https://api.nasa-cluster.ashutoshh.xyz:6443".
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ oc  projects 
+You have access to the following projects and can switch between them with ' project <projectname>':
+
+  * default
+    kube-node-lease
+    kube-public
+    kube-system
+    openshift
+
+```
+
+### checking other projects for router and ocp UI 
+
+```
+[ec2-user@ip-172-31-26-148 ~]$ oc  get pods -n openshift-ingress 
+NAME                              READY   STATUS    RESTARTS   AGE
+router-default-788869dc54-d2wxp   1/1     Running   0          5h45m
+router-default-788869dc54-p59lg   1/1     Running   0          5h45m
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ oc  get route  -n openshift-ingress 
+No resources found in openshift-ingress namespace.
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ oc projects  | grep -i console 
+    openshift-console
+    openshift-console-operator
+    openshift-console-user-settings
+    openshift-network-console
+[ec2-user@ip-172-31-26-148 ~]$ oc  get route  -n openshift-console 
+NAME        HOST/PORT                                                     PATH   SERVICES    PORT    TERMINATION          WILDCARD
+console     console-openshift-console.apps.nasa-cluster.ashutoshh.xyz            console     https   reencrypt/Redirect   None
+downloads   downloads-openshift-console.apps.nasa-cluster.ashutoshh.xyz          downloads   http    edge/Redirect        None
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ oc  get pod  -n openshift-console 
+NAME                         READY   STATUS    RESTARTS   AGE
+console-8bf858d8b-52djq      1/1     Running   0          5h30m
+console-8bf858d8b-rnq56      1/1     Running   0          5h30m
+downloads-5bf6d6d998-r8ghb   1/1     Running   0          5h40m
+downloads-5bf6d6d998-vh928   1/1     Running   0          5h40m
+[ec2-user@ip-172-31-26-148 ~]$ 
+
+```
+
+### gettting yaml file from a running pod 
+
+```
+oc  get  po  ashu-podx1   -o yaml 
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    k8s.ovn.org/pod-networks: '{"default":{"ip_addresses":["10.129.2.19/23"],"mac_address":"0a:58:0a:81:02:13","gateway_ips":["10.129.2.1"],"routes":[{"dest":"10.128.0.0/14","nextHop":"10.129.2.1"},{"dest":"172.30.0.0/16","nextHop":"10.129.2.1"},{"dest":"169.254.0.5/32","nextHop":"10.129.2.1"},{"dest":"100.64.0.0/16","nextHop":"10.129.2.1"}],"ip_address":"10.129.2.19/23","gateway_ip":"10.129.2.1","role":"primary"}}'
+    k8s.v1.cni.cncf.io/network-status: |-
+      [{
+          "name": "ovn-kubernetes",
+          "interface": "eth0",
+          "ips": [
+
+```
+
+### history 
+
+```
+  209  oc  get  po  ashu-podx1   -o yaml 
+  210  oc  get  po  ashu-podx1   -o json 
+
+```
