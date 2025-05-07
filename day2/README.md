@@ -344,3 +344,34 @@ metadata:
   210  oc  get  po  ashu-podx1   -o json 
 
 ```
+
+### checking webui details 
+
+```
+[ec2-user@ip-172-31-26-148 ~]$ oc  projects | grep console 
+    openshift-console
+    openshift-console-operator
+    openshift-console-user-settings
+    openshift-network-console
+[ec2-user@ip-172-31-26-148 ~]$ oc  get routes -n openshift-console
+NAME        HOST/PORT                                                     PATH   SERVICES    PORT    TERMINATION          WILDCARD
+console     console-openshift-console.apps.nasa-cluster.ashutoshh.xyz            console     https   reencrypt/Redirect   None
+downloads   downloads-openshift-console.apps.nasa-cluster.ashutoshh.xyz          downloads   http    edge/Redirect        None
+[ec2-user@ip-172-31-26-148 ~]$ ls
+README.md  hello_ocp  kubectl  oc  openshift-client-linux.tar.gz  openshift-install  openshift-install-linux.tar.gz  pull-secret.txt
+[ec2-user@ip-172-31-26-148 ~]$ ls hello_ocp/
+auth  metadata.json  terraform.platform.auto.tfvars.json  terraform.tfvars.json  tls
+[ec2-user@ip-172-31-26-148 ~]$ ls hello_ocp/auth/
+kubeadmin-password  kubeconfig
+[ec2-user@ip-172-31-26-148 ~]$ oc whoami
+kube:admin
+[ec2-user@ip-172-31-26-148 ~]$ oc  get pod  -n openshift-console
+NAME                         READY   STATUS    RESTARTS   AGE
+console-8bf858d8b-52djq      1/1     Running   0          7h34m
+console-8bf858d8b-rnq56      1/1     Running   0          7h34m
+downloads-5bf6d6d998-r8ghb   1/1     Running   0          7h44m
+downloads-5bf6d6d998-vh928   1/1     Running   0          7h44m
+[ec2-user@ip-172-31-26-148 ~]$ 
+
+
+```
