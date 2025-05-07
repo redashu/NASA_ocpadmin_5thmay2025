@@ -1,0 +1,9 @@
+# default-deny.yaml
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny
+spec:
+  podSelector: {}  # Applies to ALL pods
+  policyTypes:
+    - Ingress

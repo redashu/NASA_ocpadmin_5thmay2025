@@ -520,3 +520,116 @@ Commercial support is available at
 / # 
 
 ```
+
+## Network policy in OCP 
+
+<img src="netpol1.png">
+
+
+### to define rules using network policy we need to write yaml/json based manifest
+
+<img src="netpol2.png">
+
+### listing all api-resources with its kind and apiversion in ocp 
+
+```
+[ec2-user@ip-172-31-26-148 ~]$ oc  api-resources   | grep -i networkpol
+networkpolicies                       netpol                                                                                 networking.k8s.io/v1                          true         NetworkPolicy
+adminnetworkpolicies                  anp                                                                                    policy.networking.k8s.io/v1alpha1             false        AdminNetworkPolicy
+baselineadminnetworkpolicies          banp                                                                                   policy.networking.k8s.io/v1alpha1             false        BaselineAdminNetworkPolicy
+[ec2-user@ip-172-31-26-148 ~]$ 
+
+```
+
+## Creating pod yaml using oc command 
+
+```
+[ec2-user@ip-172-31-26-148 ~]$ oc run  ashu-podx1  --image nginx  --dry-run=client -o yaml 
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: ashu-podx1
+  name: ashu-podx1
+spec:
+  containers:
+  - image: nginx
+    name: ashu-podx1
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+[ec2-user@ip-172-31-26-148 ~]$ oc run  ashu-podx1  --image nginx  --dry-run=client -o yaml  >ashupod1.yaml 
+[ec2-user@ip-172-31-26-148 ~]$ 
+
+```
+
+### Creating from yaml file 
+
+```
+ec2-user@ip-172-31-26-148 ~]$ oc create  -f ashupod1.yaml 
+pod/ashu-podx1 created
+[ec2-user@ip-172-31-26-148 ~]$ oc  get  pod
+NAME          READY   STATUS    RESTARTS   AGE
+ashu-podx1    1/1     Running   0          6s
+holly-podx1   1/1     Running   0          5s
+iris-pod1     1/1     Running   0          3s
+[ec2-user@ip-172-31-26-148 ~]$ oc  get  pod -o wide
+NAME          READY   STATUS    RESTARTS   AGE   IP            NODE                          NOMINATED NODE   READINESS GATES
+ashu-podx1    1/1     Running   0          17s   10.129.2.36   ip-10-0-77-176.ec2.internal   <none>           <none>
+holly-podx1   1/1     Running   0          16s   10.129.2.37   ip-10-0-77-176.ec2.internal   <none>           <none>
+iris-pod1     1/1     Running   0          14s   10.129.2.38   ip-10-0-77-176.ec2.internal   <none>           <none>
+jerry-podx1   1/1     Running   0          8s    10.129.2.39   ip-10-0-77-176.ec2.internal   <none>           <none>
+[ec2-user@ip-172-31-26-148 ~]$ 
+
+```
+
+### testing pod to pod communication with web app
+
+```
+ec2-user@ip-172-31-26-148 ~]$ oc rsh client 
+/ # 
+/ # curl  http://10.129.2.36
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, the nginx web server is successfully installed and
+working. Further configuration is required.</p>
+
+<p>For online documentation and support please refer to
+<a href="http://nginx.org/">nginx.org</a>.<br/>
+Commercial support is available at
+<a href="http://nginx.com/">nginx.com</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+/ # 
+/ # exit
+[ec2-user@ip-172-31-26-148 ~]$ 
+
+```
+
+### apply default deny to all the pods in current namespace 
+
+```
+[ec2-user@ip-172-31-26-148 ~]$ oc create -f default-deny.yaml 
+networkpolicy.networking.k8s.io/default-deny created
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ oc  get   netpol 
+NAME           POD-SELECTOR   AGE
+default-deny   <none>         7s
+[ec2-user@ip-172-31-26-148 ~]$ 
+
+```
