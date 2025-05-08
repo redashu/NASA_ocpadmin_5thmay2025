@@ -633,3 +633,27 @@ default-deny   <none>         7s
 [ec2-user@ip-172-31-26-148 ~]$ 
 
 ```
+### Creating network policy to allow particular pod 
+
+```
+[ec2-user@ip-172-31-26-148 ~]$ mkdir  ashu-yaml
+[ec2-user@ip-172-31-26-148 ~]$ ls
+ README.md       cm2-pod1.yaml       holly              kubectl          mjgpod1.yaml                    openshift-install-linux.tar.gz   pull-secret.txt
+ ashu-yaml       default-deny.yaml   hollypod1.yaml     leepod1.yaml     oc                              poc1                             russpod3.yaml
+ ashupod1.yaml   haroutpod1.yaml     irispod1.yaml      manuelpod.yaml   openshift-client-linux.tar.gz   podnew.yaml
+ cm1-pod1.yaml   hello_ocp          "jerry'spod.yaml"   md1.yaml         openshift-install               ptsengpod1.yaml
+[ec2-user@ip-172-31-26-148 ~]$ ls
+ README.md       cm1-pod1.yaml       hello_ocp        irispod1.yaml      manuelpod.yaml   oc                               poc1              russpod3.yaml
+ ashu-yaml       cm2-pod1.yaml       holly-yaml      "jerry'spod.yaml"   md1              openshift-client-linux.tar.gz    podnew.yaml
+ ashupod1.yaml   default-deny.yaml   hollypod1.yaml   kubectl            md1.yaml         openshift-install                ptsengpod1.yaml
+ chris           haroutpod1.yaml     iris-yaml        leepod1.yaml       mjgpod1.yaml     openshift-install-linux.tar.gz   pull-secret.txt
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ cp  default-deny.yaml   ashu-yaml/
+[ec2-user@ip-172-31-26-148 ~]$ 
+[ec2-user@ip-172-31-26-148 ~]$ cd ashu-yaml/
+[ec2-user@ip-172-31-26-148 ashu-yaml]$ ls
+default-deny.yaml
+[ec2-user@ip-172-31-26-148 ashu-yaml]$ 
+
+
+```

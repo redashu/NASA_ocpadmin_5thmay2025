@@ -1,0 +1,13 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: ashupod-allow-http
+spec:
+  podSelector:  # target pod for which you want to create policy 
+   matchLabels:
+     run: ashu-podx1
+  ingress:
+  - from: [] # from anywhere i want to allow
+    ports: 
+    - protocol: TCP
+      port: 80
