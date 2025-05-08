@@ -657,3 +657,44 @@ default-deny.yaml
 
 
 ```
+### show label 
+
+```
+ec2-user@ip-172-31-26-148 ashu-yaml]$ oc  get po  --show-labels
+NAME           READY   STATUS    RESTARTS   AGE   LABELS
+ashu-podx1     1/1     Running   0          28m   run=ashu-podx1
+client         1/1     Running   0          27m   run=client
+cm-podx2       1/1     Running   0          28m   run=cm-podx2
+harout-podx1   1/1     Running   0          27m   run=harout-podx1
+holly-podx1    1/1     Running   0          28m   run=holly-podx1
+iris-pod1      1/1     Running   0          28m   run=iris-pod1
+jerry-podx1    1/1     Running   0          28m   run=jerry-podx1
+manuel-podx1   1/1     Running   0          27m   run=manuel-podx1
+md1            1/1     Running   0          28m   run=md1
+mjg-podx1      1/1     Running   0          26m   run=mjg-podx1
+
+```
+
+### updating existing info 
+
+```
+[ec2-user@ip-172-31-26-148 md1]$ oc apply  -f allow-md1.yaml 
+Warning: resource networkpolicies/md1-allow-rule is missing the kubectl.kubernetes.io/last-applied-configuration annotation which is required by oc apply. oc apply should only be used on resources created declaratively by either oc create --save-config or oc apply. The missing annotation will be patched automatically.
+networkpolicy.networking.k8s.io/md1-allow-rule configured
+[ec2-user@ip-172-31-26-148 md1]$ 
+[ec2-user@ip-172-31-26-148 md1]$ oc apply  -f allow-md1.yaml 
+networkpolicy.networking.k8s.io/md1-allow-rule configured
+[ec2-user@ip-172-31-26-148 md1]$ oc get netpol
+NAME                       POD-SELECTOR       AGE
+allow-ptsengpod-http       run=ptseng-podx1   5s
+allow-testpod-http-chris   run=testpod        2s
+ashupod-allow-http         run=ashu-podx1     9m13s
+default-deny               <none>             27m
+hollypod-allow-http        run=holly-podx1    5m49s
+irispod-allow-http         run=iris-pod1      4m30s
+jerrypod-allow-http        run=jerry-podx1    111s
+md1-allow-rule             run=md1            4m59s
+mjgpod-allow-http          run=mjg-podx1      3m57s
+[ec2-user@ip-172-31-26-148 md1]$ 
+
+```

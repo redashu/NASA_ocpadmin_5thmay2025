@@ -12,3 +12,7 @@
 [click](https://www.redhat.com/en/blog/codeready-containers)
 
 
+### Network policy info 
+
+[click_here](https://kubernetes.io/docs/concepts/services-networking/network-policies/)
+
