@@ -81,3 +81,8 @@ ashu-appd-59785c4c9-dk4j7            0/1     Completed      2 (14s ago)   16s
 rhope-appd-deploy-86bc594f6b-fvt9t   0/1     ErrImagePull   0             58s
 [ec2-user@ip-172-31-26-148 ~]$ 
 ```
+
+### after making changes in exitsing deploy yaml use replace 
+
+<img src="replace.png">
+
