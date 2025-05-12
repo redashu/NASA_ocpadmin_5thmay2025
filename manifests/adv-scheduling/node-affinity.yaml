@@ -1,0 +1,26 @@
+# affinity-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+    name: nginx-prod
+spec:
+    containers:
+    - name: nginx
+      image: nginx
+    affinity:
+        nodeAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              preference:
+                matchExpressions:
+                - key: disk
+                  operator: In
+                  values:  # Prefer to run on "env=prod" nodes
+                  - ssssd
+            # #requiredDuringSchedulingIgnoredDuringExecution:
+            #     nodeSelectorTerms:
+            #     - matchExpressions:
+            #         - key: disk
+            #           operator: In
+            #           values:  # Must run on "env=prod" nodes
+            #           - sssd

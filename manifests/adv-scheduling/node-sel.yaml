@@ -1,0 +1,11 @@
+# node-selector-pod.yaml
+apiVersion: v1
+kind: Pod
+metadata:
+    name: nginx-ssd
+spec:
+    containers:
+    - name: nginx
+      image: nginx
+    nodeSelector:
+        disk: ssd  # Will only run on nodes with this label
