@@ -1,0 +1,26 @@
+[ec2-user@ip-172-31-26-148 ~]$ cat dep1.yaml 
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: ashu-appd
+  name: ashu-appd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ashu-appd
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: ashu-appd
+    spec:
+      containers:
+      - image: quay.io/jay1123/alpine:amd
+        name: alpine
+        command: ["sleep","100000"]
+        resources: {}
+status: {}
