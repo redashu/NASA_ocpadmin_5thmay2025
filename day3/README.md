@@ -169,3 +169,21 @@ ashu-approute   ashu-approute-default.apps.hellocs.ashutoshh.xyz          ashu-l
 ## final understanding here 
 
 <img src="final.png">
+
+# RBAC in openshift 
+
+<img src="rbac1.png">
+
+## users in OCP 
+
+<img src="rbac2.png">
+
+# Creating users using htpasswd tool 
+
+<img src="rbac3.png">
+
+### using htpasswd
+
+```
+htpasswd -cbB  ~/.creds/users  user1  Redhat@123 
+htpasswd -bB  ~/.creds/users  user2  Redhat@123 
