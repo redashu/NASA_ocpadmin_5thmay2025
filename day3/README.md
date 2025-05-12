@@ -187,3 +187,43 @@ ashu-approute   ashu-approute-default.apps.hellocs.ashutoshh.xyz          ashu-l
 ```
 htpasswd -cbB  ~/.creds/users  user1  Redhat@123 
 htpasswd -bB  ~/.creds/users  user2  Redhat@123 
+
+```
+
+## above creds we gonna store in ocp secret
+
+<img src="ocp_sec1.png">
+
+## storing user details in ocp cluster using secret 
+
+<img src="ocp_sec2.png">
+
+```
+
+apiVersion: config.openshift.io/v1
+kind: OAuth
+metadata:
+  annotations:
+    include.release.openshift.io/ibm-cloud-managed: "true"
+    include.release.openshift.io/self-managed-high-availability: "true"
+    release.openshift.io/create-only: "true"
+  creationTimestamp: "2025-05-12T06:06:13Z"
+  generation: 2
+  name: cluster
+  ownerReferences:
+  - apiVersion: config.openshift.io/v1
+    kind: ClusterVersion
+    name: version
+    uid: c4b9b911-17b8-449a-a6ec-7b96144b2fad
+  resourceVersion: "44812"
+  uid: 73c77a51-f8b7-47f6-84d8-626f3d6dbec8
+spec:
+  identityProviders:
+  - htpasswd:
+      fileData:
+        name: users
+    mappingMethod: claim
+    name: htpasswd_provider
+    type: HTPasswd
+
+```
