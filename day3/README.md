@@ -227,3 +227,11 @@ spec:
     type: HTPasswd
 
 ```
+
+### login with new user 
+
+<img src="login11.png">
+
+### assing role to a user for particular project 
+
+<img src="rolen.png">
