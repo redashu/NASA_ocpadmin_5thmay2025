@@ -235,3 +235,11 @@ spec:
 ### assing role to a user for particular project 
 
 <img src="rolen.png">
+
+## from a new user creating pod to TEST SCC
+
+<img src="scct1.png">
+
+### allow user to use privileged / anyuid SCC in their project
+
+<img src="scct2.png">
