@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ashu-pod
+  labels:
+    app: nginx
+spec:
+  nodeSelector: # pod scheduling on matched label node 
+    ashu: ssd-disk
+  # nodeSelector: disktype: ssd
+  containers:
+  - name: nginx
+    image: nginx:latest
+    ports:
+    - containerPort: 80

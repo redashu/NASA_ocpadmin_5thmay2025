@@ -193,3 +193,54 @@ FIELDS:
     Defaults to "claim"
 
 ```
+
+### Node selector for scheduling 
+
+<img src="node1.png">
+
+### checking label of nodes to be used by node selector
+
+```
+ec2-user@ip-172-31-26-148 ~]$ oc get  nodes
+NAME                          STATUS   ROLES                  AGE   VERSION
+ip-10-0-25-126.ec2.internal   Ready    control-plane,master   16h   v1.31.7
+ip-10-0-34-138.ec2.internal   Ready    control-plane,master   16h   v1.31.7
+ip-10-0-71-247.ec2.internal   Ready    worker                 15h   v1.31.7
+ip-10-0-72-204.ec2.internal   Ready    worker                 14h   v1.31.7
+ip-10-0-84-28.ec2.internal    Ready    worker                 16h   v1.31.7
+ip-10-0-9-22.ec2.internal     Ready    control-plane,master   16h   v1.31.7
+[ec2-user@ip-172-31-26-148 ~]$ oc  describe node  ip-10-0-71-247.ec2.internal  
+Name:               ip-10-0-71-247.ec2.internal
+Roles:              worker
+Labels:             beta.kubernetes.io/arch=amd64
+                    beta.kubernetes.io/instance-type=t3a.xlarge
+                    beta.kubernetes.io/os=linux
+                    cpu-feature.node.kubevirt.io/3dnow=true
+                    cpu-feature.node.kubevirt.io/3dnowext=true
+                    cpu-feature.node.kubevirt.io/3dnowprefetch=true
+                    cpu-feature.node.kubevirt.io/abm=true
+                    cpu-feature.node.kubevirt.io/acpi=true
+                    cpu-feature.node.kubevirt.io/adx=true
+                    cpu-feature.node.kubevirt.io/aes=true
+                    cpu-feature.node.kubevirt.io/apic=true
+                    cpu-feature.node.kubevirt.io/arat=true
+                    cpu-feature.node.kubevirt.io/avx=true
+                    cpu-feature.node.kubevirt.io/avx2=true
+
+```
+
+### giving custom label to node
+
+```
+oc label  node   ip-10-0-71-247.ec2.internal  ashu=ssd-disk
+
+```
+
+### checking label of node
+
+```
+ oc  get nodes  ip-10-0-71-247.ec2.internal   --show-labels 
+NAME                          STATUS   ROLES    AGE   VERSION   LABELS
+ip-10-0-71-247.ec2.internal   Ready    worker   16h   v1.31.7   ashu=ssd-disk,beta.kubernetes.io/arch=amd64,beta.kubernetes.io/instance-type=t3a.xlarge,beta.kubernetes.io/os=linux,cpu-feature.node.kubevirt.io/3dnow=true,cpu-feature.node.kubevirt.io/3dnowext=true,cpu-feature.node.kubevirt.io/3dnowprefetch=true,cpu-feature.node.kubevirt.io/abm=true,cpu-feature.node.kubevirt.io/acpi=true,cpu-feature.node.kubevirt.io/adx=true,cpu-feature.node.kubevirt.io/aes=true,cpu-feature.node.kubevirt.io/apic=true,cpu-feature.node.k
+
+```
