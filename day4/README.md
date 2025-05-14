@@ -94,3 +94,51 @@ holly-pvc    Pending                                      gp3-csi        <unset>
 
 <img src="pvcn1.png">
 
+## Intro to openshfit virtualization - using kubevirt 
+
+<img src="kubevirt1.png">
+
+### prerequisite 
+
+<img src="kubevirt2.png">
+
+### checking vtx support in worker nodes 
+
+<img src="vtx1.png">
+
+### kubevirt components 
+
+<img src="vtx2.png">
+
+### after operator install -- create hyperconverged 
+
+- then verify status 
+
+```
+[ec2-user@ip-172-31-26-148 ~]$ oc  get  po -n openshift-cnv 
+NAME                                                              READY   STATUS    RESTARTS   AGE
+aaq-operator-754fd4677b-2whkl                                     1/1     Running   0          12m
+bridge-marker-5462r                                               1/1     Running   0          76s
+bridge-marker-ckhbs                                               1/1     Running   0          76s
+bridge-marker-lhwh2                                               1/1     Running   0          76s
+cdi-apiserver-74bf48c54-n4xv9                                     1/1     Running   0          70s
+cdi-deployment-79bf78d98c-r6555                                   0/1     Running   0          69s
+cdi-operator-78cdc7d9bc-tn2sx                                     1/1     Running   0          12m
+cdi-uploadproxy-6dbb87657c-xj876                                  1/1     Running   0          69s
+cluster-network-addons-operator-7f9b76d46b-xzrxz                  2/2     Running   0          12m
+
+```
+
+### checking operator status 
+
+```
+[ec2-user@ip-172-31-26-148 ~]$ oc  get  csv  -n openshift-cnv 
+NAME                                       DISPLAY                    VERSION                 REPLACES                                   PHASE
+devworkspace-operator.v0.33.0              DevWorkspace Operator      0.33.0                  devworkspace-operator.v0.32.1              Succeeded
+kubevirt-hyperconverged-operator.v4.18.3   OpenShift Virtualization   4.18.3                  kubevirt-hyperconverged-operator.v4.18.2   Succeeded
+web-terminal.v1.12.1-0.1745393748.p        Web Terminal               1.12.1+0.1745393748.p   web-terminal.v1.11.1                       Succeeded
+[ec2-user@ip-172-31-26-148 ~]$ 
+
+```
+
+
