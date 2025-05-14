@@ -142,3 +142,54 @@ web-terminal.v1.12.1-0.1745393748.p        Web Terminal               1.12.1+0.1
 ```
 
 
+## Id provider in OCP 
+
+<img src="id1.png">
+
+### checking oauth support of idproviders
+
+```
+[ec2-user@ip-172-31-26-148 ~]$ oc  explain  oauth.spec.identityProviders 
+GROUP:      config.openshift.io
+KIND:       OAuth
+VERSION:    v1
+
+FIELD: identityProviders <[]Object>
+
+
+DESCRIPTION:
+    identityProviders is an ordered list of ways for a user to identify
+    themselves.
+    When this list is empty, no identities are provisioned for users.
+    IdentityProvider provides identities for users authenticating using
+    credentials
+    
+FIELDS:
+  basicAuth	<Object>
+    basicAuth contains configuration options for the BasicAuth IdP
+
+  github	<Object>
+    github enables user authentication using GitHub credentials
+
+  gitlab	<Object>
+    gitlab enables user authentication using GitLab credentials
+
+  google	<Object>
+    google enables user authentication using Google credentials
+
+  htpasswd	<Object>
+    htpasswd enables user authentication using an HTPasswd file to validate
+    credentials
+
+  keystone	<Object>
+    keystone enables user authentication using keystone password credentials
+
+  ldap	<Object>
+    ldap enables user authentication using LDAP credentials
+
+  mappingMethod	<string>
+    mappingMethod determines how identities from this provider are mapped to
+    users
+    Defaults to "claim"
+
+```
